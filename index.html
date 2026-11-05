@@ -1,3 +1,115 @@
+<script>
+(function () {
+  // ===== 1. 判断是否为手机端 =====
+  var ua = navigator.userAgent || '';
+  var isMobile =
+    /Android|iPhone|iPod|iPad|HarmonyOS|Mobile|Windows Phone|BlackBerry|Opera Mini|IEMobile/i.test(ua) ||
+    (navigator.maxTouchPoints > 1 && Math.min(screen.width, screen.height) < 820);
+
+  if (isMobile) return; // 手机端：完全不受影响
+
+  // ===== 2. 先隐藏原页面，避免内容闪现 =====
+  document.documentElement.style.visibility = 'hidden';
+
+  var MAINTENANCE_HTML = `
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <title>网站维护中</title>
+      <style>
+        :root{
+          --bg:#0b0e14;
+          --card:rgba(255,255,255,.035);
+          --line:rgba(255,255,255,.09);
+          --text:#e8ecf3;
+          --sub:#8b95a7;
+          --accent:#5b8cff;
+        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        html,body{background:var(--bg)}
+        body{
+          min-height:100vh;display:flex;align-items:center;justify-content:center;
+          padding:24px;color:var(--text);
+          background:
+            radial-gradient(620px 420px at 50% -12%, rgba(91,140,255,.18), transparent 70%),
+            radial-gradient(520px 420px at 108% 112%, rgba(126,87,255,.12), transparent 70%),
+            var(--bg);
+          font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+          -webkit-font-smoothing:antialiased;
+        }
+        .card{
+          width:100%;max-width:480px;padding:52px 44px 42px;text-align:center;
+          background:var(--card);border:1px solid var(--line);border-radius:20px;
+          box-shadow:0 24px 64px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.06);
+          backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+        }
+        .icon{
+          width:64px;height:64px;margin:0 auto 26px;border-radius:18px;
+          display:flex;align-items:center;justify-content:center;color:var(--accent);
+          background:rgba(91,140,255,.10);border:1px solid rgba(91,140,255,.25);
+          box-shadow:0 0 36px rgba(91,140,255,.20);
+        }
+        h1{font-size:22px;font-weight:600;letter-spacing:.5px}
+        .desc{margin-top:10px;font-size:14px;color:var(--sub);line-height:1.8}
+
+        /* 维护进行中状态条 */
+        .status{
+          display:inline-flex;align-items:center;gap:8px;margin-top:28px;
+          padding:9px 18px;border-radius:999px;
+          background:rgba(91,140,255,.10);border:1px solid rgba(91,140,255,.25);
+          font-size:13px;color:#a9c0ff;letter-spacing:.3px;
+        }
+        .dot{
+          width:7px;height:7px;border-radius:50%;background:var(--accent);
+          animation:pulse 1.8s ease-out infinite;
+        }
+        @keyframes pulse{
+          0%{box-shadow:0 0 0 0 rgba(91,140,255,.55)}
+          70%{box-shadow:0 0 0 9px rgba(91,140,255,0)}
+          100%{box-shadow:0 0 0 0 rgba(91,140,255,0)}
+        }
+
+        .note{margin-top:26px;font-size:13px;color:var(--sub)}
+        .foot{margin-top:6px;font-size:13px;color:var(--sub)}
+        .foot a{color:var(--accent);text-decoration:none}
+        .foot a:hover{text-decoration:underline}
+        @media (max-width:420px){
+          .card{padding:40px 24px 32px}
+        }
+      </style>
+    </head>
+    <body>
+      <div class="card">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor"
+               stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
+        </div>
+
+        <h1>网站正在维护中</h1>
+        <p class="desc">我们正在进行系统升级，<br>完成后即可正常访问，敬请谅解。</p>
+
+        <div class="status"><span class="dot"></span>维护进行中</div>
+
+        <p class="note">手机端访问不受影响</p>
+        <p class="foot">手机端访问不受影响 <a href="mailto:手机端访问不受影响">手机端访问不受影响</a></p>
+      </div>
+    </body>
+  `;
+
+  function render() {
+    document.documentElement.innerHTML = MAINTENANCE_HTML;
+    document.documentElement.style.visibility = 'visible';
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', render);
+  } else {
+    render();
+  }
+})();
+</script>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
